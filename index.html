@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@Bitchverification | Прайс-лист</title>
+    <title>Cloreth | Прайс-лист</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600&family=SF+Mono:wght@400;500&display=swap" rel="stylesheet">
-    
+
     <style>
-        /* --- ДИЗАЙН-СИСТЕМА APPLE MINIMALISM --- */
         :root[data-theme="dark"] {
             --bg-color: #000000;
             --card-bg: rgba(255, 255, 255, 0.04);
@@ -46,9 +45,10 @@
             padding: 0;
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
             -webkit-tap-highlight-color: transparent;
-            transition: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
-                        border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-                        color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transition:
+                background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         body {
@@ -71,7 +71,6 @@
             animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* --- ВЕРХНЯЯ ПАНЕЛЬ ПЕРЕКЛЮЧАТЕЛЕЙ --- */
         .top-controls {
             display: flex;
             justify-content: space-between;
@@ -126,7 +125,6 @@
             transform: scale(0.96);
         }
 
-        /* --- HERO БЛОК --- */
         .hero {
             background: var(--card-bg);
             border: 1px solid var(--card-border);
@@ -173,7 +171,6 @@
             vertical-align: middle;
         }
 
-        /* --- СТАЦИОНАРНАЯ СЕТКА ХАРАКТЕРИСТИК --- */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -205,7 +202,6 @@
             letter-spacing: -0.1px;
         }
 
-        /* --- СЕКЦИИ ПРАЙС-ЛИСТА --- */
         .price-card {
             background: var(--card-bg);
             border: 1px solid var(--card-border);
@@ -270,7 +266,6 @@
             color: var(--text-main);
         }
 
-        /* --- СПИСОК ССЫЛОК --- */
         .links-list {
             display: flex;
             flex-direction: column;
@@ -336,7 +331,8 @@
             font-weight: 500;
         }
 
-        /* --- МОДАЛЬНОЕ ОКНО --- */
+        /* Модальное окно */
+
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -412,10 +408,40 @@
             justify-content: center;
         }
 
+        .review-tabs {
+            display: flex;
+            gap: 8px;
+            padding: 4px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 18px;
+        }
+
+        .review-tab {
+            flex: 1;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            padding: 12px 16px;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .review-tab.active {
+            background: var(--btn-bg);
+            color: var(--btn-text);
+        }
+
         .reviews-list {
             display: flex;
             flex-direction: column;
             gap: 16px;
+        }
+
+        .reviews-list.hidden {
+            display: none;
         }
 
         .review-card {
@@ -440,7 +466,6 @@
             color: var(--text-secondary);
         }
 
-        /* --- TOAST УВЕДОМЛЕНИЕ --- */
         #toast {
             position: fixed;
             bottom: 40px;
@@ -465,20 +490,28 @@
             transform: translateX(-50%) translateY(0);
         }
 
-        /* --- АНИМАЦИИ --- */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(16px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @keyframes blink {
-            50% { opacity: 0; }
+            50% {
+                opacity: 0;
+            }
         }
 
         @media (min-width: 640px) {
             .modal-overlay {
                 align-items: center;
             }
+
             .modal-sheet {
                 border-radius: 36px;
                 max-height: 75vh;
@@ -486,446 +519,745 @@
         }
     </style>
 </head>
+
 <body>
 
-    <div class="container">
-        <!-- Панель управления -->
-        <div class="top-controls">
-            <div class="pill-group">
-                <button class="pill-btn active" id="lang-ru" onclick="setLang('ru')">RU</button>
-                <button class="pill-btn" id="lang-en" onclick="setLang('en')">EN</button>
-            </div>
-            <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">Светлая тема</button>
+<div class="container">
+
+    <!-- Панель управления -->
+    <div class="top-controls">
+        <div class="pill-group">
+            <button class="pill-btn active" id="lang-ru" onclick="setLang('ru')">RU</button>
+            <button class="pill-btn" id="lang-en" onclick="setLang('en')">EN</button>
         </div>
 
-        <!-- Главная карточка -->
-        <header class="hero">
-            <h1>@Bitchverification ★</h1>
-            
-            <!-- Печатная машинка -->
-            <div class="typewriter-container">
-                <span class="typewriter" id="typewriter"></span><span class="cursor"></span>
-            </div>
-        </header>
+        <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">
+            Светлая тема
+        </button>
+    </div>
 
-        <!-- Статистика / Гарантии -->
-        <section class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-value">100%</div>
-                <div class="stat-label" id="t-garant">Гарантия</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value">24/7</div>
-                <div class="stat-label" id="t-support">Поддержка</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value">free</div>
-                <div class="stat-label" id="t-test">Тест Деф</div>
-            </div>
-        </section>
+    <!-- Главная карточка -->
+    <header class="hero">
+        <h1>Cloreth ★</h1>
 
-        <!-- ПРАЙС-ЛИСТ -->
+        <div class="typewriter-container">
+            <span class="typewriter" id="typewriter"></span>
+            <span class="cursor"></span>
+        </div>
+    </header>
 
-        <!-- VIP ДЕФ -->
-        <div class="price-card highlight">
-            <div class="price-card-header">
-                <span class="price-card-title">VIP Д€ф</span>
-                <span class="price-row-val">12$ / 1000₽ / 800 🌟</span>
-            </div>
-            <div class="price-card-sub" id="t-vip-sub">Навсегда</div>
-            <div class="price-card-sub" style="margin-top: 4px; opacity: 0.8;" id="t-vip-desc">
-                1. Моментально отвечаем<br>
-                2. Делаем все чтобы вас защитить<br>
-                3. Помогает в анонимности
-            </div>
+    <!-- Статистика -->
+    <section class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-value">100%</div>
+            <div class="stat-label" id="t-garant">Гарантия</div>
         </div>
 
-        <!-- ДЕФ -->
-        <div class="price-card">
-            <div class="price-card-title">Д€ф</div>
-            <div class="price-list-rows">
-                <div class="price-row">
-                    <span class="price-row-name" id="t-def-1">Разово</span>
-                    <span class="price-row-val">150 руб</span>
-                </div>
-                <div class="price-row">
-                    <span class="price-row-name" id="t-def-2">Месяц</span>
-                    <span class="price-row-val">230 руб</span>
-                </div>
-                <div class="price-row">
-                    <span class="price-row-name" id="t-def-3">3 месяца</span>
-                    <span class="price-row-val">380 руб</span>
-                </div>
-                <div class="price-row">
-                    <span class="price-row-name" id="t-def-4">Год</span>
-                    <span class="price-row-val">500 руб</span>
-                </div>
-                <div class="price-row">
-                    <span class="price-row-name" id="t-def-5">Навсегда</span>
-                    <span class="price-row-val">600 руб</span>
-                </div>
+        <div class="stat-card">
+            <div class="stat-value">24/7</div>
+            <div class="stat-label" id="t-support">Поддержка</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-value">free</div>
+            <div class="stat-label" id="t-test">Тест Деф</div>
+        </div>
+    </section>
+
+    <!-- ПРАЙС-ЛИСТ -->
+
+    <!-- VIP ДЕФ -->
+    <div class="price-card highlight">
+        <div class="price-card-header">
+            <span class="price-card-title">VIP Д€ф</span>
+            <span class="price-row-val">12$ / 1000₽ / 800 🌟</span>
+        </div>
+
+        <div class="price-card-sub" id="t-vip-sub">Навсегда</div>
+
+        <div class="price-card-sub" style="margin-top: 4px; opacity: 0.8;" id="t-vip-desc">
+            1. Моментально отвечаем<br>
+            2. Делаем все чтобы вас защитить<br>
+            3. Помогает в анонимности
+        </div>
+    </div>
+
+    <!-- ДЕФ -->
+    <div class="price-card">
+        <div class="price-card-title">Д€ф</div>
+
+        <div class="price-list-rows">
+            <div class="price-row">
+                <span class="price-row-name" id="t-def-1">Разово</span>
+                <span class="price-row-val">150 руб</span>
+            </div>
+
+            <div class="price-row">
+                <span class="price-row-name" id="t-def-2">Месяц</span>
+                <span class="price-row-val">230 руб</span>
+            </div>
+
+            <div class="price-row">
+                <span class="price-row-name" id="t-def-3">3 месяца</span>
+                <span class="price-row-val">380 руб</span>
+            </div>
+
+            <div class="price-row">
+                <span class="price-row-name" id="t-def-4">Год</span>
+                <span class="price-row-val">500 руб</span>
+            </div>
+
+            <div class="price-row">
+                <span class="price-row-name" id="t-def-5">Навсегда</span>
+                <span class="price-row-val">600 руб</span>
             </div>
         </div>
+    </div>
 
-        <!-- ОСИНТ & ОБУЧЕНИЕ -->
-        <div class="price-card">
-            <div class="price-card-header">
-                <span class="price-card-title">Осинт</span>
-                <span class="price-row-val">150 – 800 руб</span>
-            </div>
-            <div class="price-card-sub" id="t-osint-sub">Поиск человека по открытым источникам (*в зависимости от сложности)</div>
+    <!-- ОСИНТ -->
+    <div class="price-card">
+        <div class="price-card-header">
+            <span class="price-card-title">Осинт</span>
+            <span class="price-row-val">150 – 800 руб</span>
         </div>
 
-        <div class="price-card">
-            <div class="price-card-header">
-                <span class="price-card-title" id="t-edu-title">Обучение</span>
-                <span class="price-row-val">1200 руб</span>
-            </div>
-            <div class="price-card-sub" id="t-edu-sub">Обучу всему чему умею, от А до Я.</div>
+        <div class="price-card-sub" id="t-osint-sub">
+            Поиск человека по открытым источникам (*в зависимости от сложности)
+        </div>
+    </div>
+
+    <!-- ОБУЧЕНИЕ -->
+    <div class="price-card">
+        <div class="price-card-header">
+            <span class="price-card-title" id="t-edu-title">Обучение</span>
+            <span class="price-row-val">1200 руб</span>
         </div>
 
-        <!-- ZН0Z & УСЛУГИ -->
-        <div class="price-card">
-            <div class="price-card-title">Zн0z</div>
-            <div class="price-card-sub" id="t-znoz-sub">ТГ аккаунта / канала / чата</div>
-            <div class="price-list-rows" style="margin-top: 8px;">
-                <div class="price-row">
-                    <span class="price-row-name" id="t-znoz-price">Стоимость</span>
-                    <span class="price-row-val">200 – 900 руб</span>
-                </div>
-            </div>
+        <div class="price-card-sub" id="t-edu-sub">
+            Обучу всему чему умею, от А до Я.
+        </div>
+    </div>
+
+    <!-- ZNOZ -->
+    <div class="price-card">
+        <div class="price-card-title">Zн0z</div>
+
+        <div class="price-card-sub" id="t-znoz-sub">
+            ТГ аккаунта / канала / чата
         </div>
 
-        <div class="price-card">
-            <div class="price-list-rows">
-                <div class="price-row">
-                    <span class="price-row-name">П0дж0г дв€ри</span>
-                    <span class="price-row-val">3000 – 12000 руб</span>
-                </div>
-                <div class="price-row">
-                    <span class="price-row-name">Сп0rтNкN</span>
-                    <span class="price-row-val">2000 – 15000 руб</span>
-                </div>
-                <div class="price-row">
-                    <span class="price-row-name">ПрNв@т</span>
-                    <span class="price-row-val">500 руб</span>
-                </div>
-                <div class="price-row">
-                    <span class="price-row-name">Д0н0с</span>
-                    <span class="price-row-val">200 руб</span>
-                </div>
-                <div class="price-row">
-                    <span class="price-row-name">Cв¥т</span>
-                    <span class="price-row-val">350 руб</span>
-                </div>
+        <div class="price-list-rows" style="margin-top: 8px;">
+            <div class="price-row">
+                <span class="price-row-name" id="t-znoz-price">Стоимость</span>
+                <span class="price-row-val">200 – 900 руб</span>
             </div>
         </div>
+    </div>
 
-        <!-- РЕКЛАМА -->
-        <div class="price-card">
-            <div class="price-card-title" id="t-adv-title">Реклама в Vile Creatures</div>
-            <div class="price-card-sub" id="t-adv-sub">Один час = приход +- 150 человек</div>
-            <div class="price-list-rows" style="margin-top: 8px;">
-                <div class="price-row">
-                    <span class="price-row-name" id="t-adv-1">1 час</span>
-                    <span class="price-row-val">150 руб</span>
-                </div>
-                <div class="price-row">
-                    <span class="price-row-name" id="t-adv-2">3 часа</span>
-                    <span class="price-row-val">300 руб</span>
-                </div>
-                <div class="price-row">
-                    <span class="price-row-name" id="t-adv-3">6 часов</span>
-                    <span class="price-row-val">450 руб</span>
-                </div>
-                <div class="price-row">
-                    <span class="price-row-name" id="t-adv-4">Навсегда</span>
-                    <span class="price-row-val">600 руб</span>
-                </div>
+    <!-- ДОПОЛНИТЕЛЬНЫЕ УСЛУГИ -->
+    <div class="price-card">
+        <div class="price-list-rows">
+            <div class="price-row">
+                <span class="price-row-name">П0дж0г дв€ри</span>
+                <span class="price-row-val">3000 – 12000 руб</span>
+            </div>
+
+            <div class="price-row">
+                <span class="price-row-name">Сп0rтNкN</span>
+                <span class="price-row-val">2000 – 15000 руб</span>
+            </div>
+
+            <div class="price-row">
+                <span class="price-row-name">ПрNв@т</span>
+                <span class="price-row-val">500 руб</span>
+            </div>
+
+            <div class="price-row">
+                <span class="price-row-name">Д0н0с</span>
+                <span class="price-row-val">200 руб</span>
+            </div>
+
+            <div class="price-row">
+                <span class="price-row-name">Cв¥т</span>
+                <span class="price-row-val">350 руб</span>
             </div>
         </div>
+    </div>
 
-        <!-- ОПЛАТА И СВЯЗЬ -->
-        <div class="price-card" style="text-align: center; gap: 6px;">
-            <div class="price-card-sub" id="t-pay-title" style="font-weight: 500;">Оплату принимаю:</div>
-            <div class="price-card-title" id="t-pay-methods" style="font-size: 15px;">На карту / КБ / NFT / Звезды</div>
+    <!-- РЕКЛАМА -->
+    <div class="price-card">
+        <div class="price-card-title" id="t-adv-title">
+            Реклама в Vile Creatures
         </div>
 
-        <!-- КНОПКИ ДЕЙСТВИЙ -->
-        <main class="links-list">
-            <a href="https://t.me/bitchverification" target="_blank" class="link-btn buy-btn" onclick="copyTag(event, '@bitchverification')">
-                <span class="link-name" id="t-link-buy">Купить / Связь в ЛС</span>
-                <span class="link-tag" style="color: inherit; opacity: 0.8;">@bitchverification</span>
-            </a>
+        <div class="price-card-sub" id="t-adv-sub">
+            Один час = приход +- 150 человек
+        </div>
 
-            <button class="link-btn reviews-trigger" onclick="openReviews()">
-                <span class="link-name" id="t-btn-reviews">Посмотреть отзывы</span>
+        <div class="price-list-rows" style="margin-top: 8px;">
+            <div class="price-row">
+                <span class="price-row-name" id="t-adv-1">1 час</span>
+                <span class="price-row-val">150 руб</span>
+            </div>
+
+            <div class="price-row">
+                <span class="price-row-name" id="t-adv-2">3 часа</span>
+                <span class="price-row-val">300 руб</span>
+            </div>
+
+            <div class="price-row">
+                <span class="price-row-name" id="t-adv-3">6 часов</span>
+                <span class="price-row-val">450 руб</span>
+            </div>
+
+            <div class="price-row">
+                <span class="price-row-name" id="t-adv-4">Навсегда</span>
+                <span class="price-row-val">600 руб</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ОПЛАТА -->
+    <div class="price-card" style="text-align: center; gap: 6px;">
+        <div class="price-card-sub" id="t-pay-title" style="font-weight: 500;">
+            Оплату принимаю:
+        </div>
+
+        <div class="price-card-title" id="t-pay-methods" style="font-size: 15px;">
+            На карту / КБ / NFT / Звезды
+        </div>
+    </div>
+
+    <!-- КНОПКИ -->
+    <main class="links-list">
+
+        <a href="https://t.me/bitchverification"
+           target="_blank"
+           rel="noopener noreferrer"
+           class="link-btn buy-btn"
+           onclick="copyTag(event, '@bitchverification')">
+
+            <span class="link-name" id="t-link-buy">
+                Купить / Связь в ЛС
+            </span>
+
+            <span class="link-tag" style="color: inherit; opacity: 0.8;">
+                @bitchverification
+            </span>
+        </a>
+
+        <button class="link-btn reviews-trigger" onclick="openReviews()">
+            <span class="link-name" id="t-btn-reviews">
+                Посмотреть отзывы
+            </span>
+        </button>
+
+    </main>
+</div>
+
+<!-- МОДАЛЬНОЕ ОКНО ОТЗЫВОВ -->
+<div class="modal-overlay" id="reviews-modal" onclick="closeReviews(event)">
+
+    <div class="modal-sheet">
+
+        <div class="modal-header">
+            <h2 id="t-modal-title">Отзывы клиентов</h2>
+
+            <button class="close-btn" onclick="closeReviewsDirect()">
+                ✕
             </button>
-        </main>
-    </div>
+        </div>
 
-    <!-- Модальное окно отзывов -->
-    <div class="modal-overlay" id="reviews-modal" onclick="closeReviews(event)">
-        <div class="modal-sheet">
-            <div class="modal-header">
-                <h2 id="t-modal-title">Отзывы клиентов</h2>
-                <button class="close-btn" onclick="closeReviewsDirect()">✕</button>
+        <!-- ВКЛАДКИ -->
+        <div class="review-tabs">
+            <button
+                class="review-tab active"
+                id="tab-nft"
+                onclick="showReviewCategory('nft')">
+                NFT
+            </button>
+
+            <button
+                class="review-tab"
+                id="tab-other"
+                onclick="showReviewCategory('other')">
+                Other
+            </button>
+        </div>
+
+        <!-- NFT ОТЗЫВЫ -->
+        <div class="reviews-list" id="reviews-nft">
+
+            <div class="review-card">
+                <p class="review-text">
+                    «Сделка прошла максимально быстро. Cloreth первым отправил NFT, всё честно и без лишних ожиданий.»
+                </p>
+                <span class="review-author">— Покупатель</span>
             </div>
-            <div class="reviews-list">
-                <div class="review-card">
-                    <p class="review-text">«Просто лучший, очень сильно помог! Люблю @bitchverification»</p>
-                    <span class="review-author">— Клиент</span>
-                </div>
-                <div class="review-card">
-                    <p class="review-text">«Имба деф, помог разрешить трабл с типом буквально за 10 минут!»</p>
-                    <span class="review-author">— Участник сообщества</span>
-                </div>
-                <div class="review-card">
-                    <p class="review-text">«Купила приват у @bitchverification, всё прошло быстро и четко. Всем советую!»</p>
-                    <span class="review-author">— Покупатель</span>
-                </div>
-                <div class="review-card">
-                    <p class="review-text">«Лучший пробив, всегда точная и верная информация! Настоящая легенда, сделал всё быстро.»</p>
-                    <span class="review-author">— Довольный клиент</span>
-                </div>
-                <div class="review-card">
-                    <p class="review-text">«Задефал лучший. Всё честно, без скама, помог и спас в сложной ситуации!»</p>
-                    <span class="review-author">— Покупатель</span>
-                </div>
-                <div class="review-card">
-                    <p class="review-text">«Обучалка от @bitchverification имба, выдал приват за минут 30. По моему мнению, стоит каждой копейки.»</p>
-                    <span class="review-author">— Ученик</span>
-                </div>
-                <div class="review-card">
-                    <p class="review-text">«Брал VIP деф, отклик моментальный. Взяли под полную защиту, теперь спокоен!»</p>
-                    <span class="review-author">— Постоянный клиент</span>
-                </div>
-                <div class="review-card">
-                    <p class="review-text">«Заказывал снос канала, сделали меньше чем за сутки! Качество работы на высоте.»</p>
-                    <span class="review-author">— Заказчик</span>
-                </div>
-                <div class="review-card">
-                    <p class="review-text">«Купил рекламу в Vile Creatures, приход получился даже больше обещанного. Отличная отдача!»</p>
-                    <span class="review-author">— Рекламодатель</span>
-                </div>
-                <div class="review-card">
-                    <p class="review-text">«Осинт выполнен максимально детально. Нашли всё до мелочей, о которых я даже не догадывался!»</p>
-                    <span class="review-author">— Клиент</span>
-                </div>
-                <div class="review-card">
-                    <p class="review-text">«Беру услуги уже третий раз у @bitchverification, всё на высшем уровне. Настоящий профи!»</p>
-                    <span class="review-author">— Сонни</span>
-                </div>
-                <div class="review-card">
-                    <p class="review-text">«Работает 24/7, ответил глубокой ночью и сразу решил мою проблему!»</p>
-                    <span class="review-author">— Довольный юзер</span>
-                </div>
-                <div class="review-card">
-                    <p class="review-text">«Оплата Telegram Stars прошла моментально, сразу приступили к работе без лишних вопросов.»</p>
-                    <span class="review-author">— Покупатель</span>
-                </div>
-                <div class="review-card">
-                    <p class="review-text">«Обучение топовое, всё доходчиво разжевал с нуля. Теперь сам умею делать базовый пробив!»</p>
-                    <span class="review-author">— Ученик</span>
-                </div>
-                <div class="review-card">
-                    <p class="review-text">«Самая адекватная поддержка и нормальное отношение к клиентам. Рекомендую!»</p>
-                    <span class="review-author">— Клиент</span>
-                </div>
-                <div class="review-card">
-                    <p class="review-text">«Спас от серьезного шантажа. Задефал быстро и профессионально. Огромное спасибо @bitchverification!»</p>
-                    <span class="review-author">— Аноним</span>
-                </div>
+
+            <div class="review-card">
+                <p class="review-text">
+                    «Очень хороший гарант. Всё объяснил, помог провести сделку и быстро передал Telegram NFT.»
+                </p>
+                <span class="review-author">— Аноним</span>
             </div>
+
+            <div class="review-card">
+                <p class="review-text">
+                    «Покупал NFT через Cloreth. Всё прошло спокойно, быстро и без каких-либо проблем.»
+                </p>
+                <span class="review-author">— Пользователь</span>
+            </div>
+
+            <div class="review-card">
+                <p class="review-text">
+                    «Один из лучших гарантов, с которыми приходилось работать. Сделка прошла чётко.»
+                </p>
+                <span class="review-author">— Клиент</span>
+            </div>
+
+            <div class="review-card">
+                <p class="review-text">
+                    «Очень быстро перевёл NFT после оплаты. Не пришлось долго ждать, всё на высшем уровне.»
+                </p>
+                <span class="review-author">— Покупатель</span>
+            </div>
+
+            <div class="review-card">
+                <p class="review-text">
+                    «Cloreth сразу вышел на связь и помог провести обмен. Всё понятно и прозрачно.»
+                </p>
+                <span class="review-author">— Аноним</span>
+            </div>
+
+            <div class="review-card">
+                <p class="review-text">
+                    «Сделка прошла буквально за несколько минут. Быстро, удобно и без лишних вопросов.»
+                </p>
+                <span class="review-author">— Участник сделки</span>
+            </div>
+
+            <div class="review-card">
+                <p class="review-text">
+                    «Пользовался услугами гаранта впервые. Cloreth всё объяснил и помог на каждом этапе.»
+                </p>
+                <span class="review-author">— Пользователь</span>
+            </div>
+
+            <div class="review-card">
+                <p class="review-text">
+                    «Быстрая передача Telegram NFT, всё прошло ровно так, как договорились. Спасибо!»
+                </p>
+                <span class="review-author">— Покупатель</span>
+            </div>
+
+            <div class="review-card">
+                <p class="review-text">
+                    «Уже не первая сделка. Всегда быстро отвечает и ответственно подходит к процессу.»
+                </p>
+                <span class="review-author">— Постоянный клиент</span>
+            </div>
+
+            <div class="review-card">
+                <p class="review-text">
+                    «Отличный гарант. Проверили все детали, после чего быстро завершили сделку.»
+                </p>
+                <span class="review-author">— Аноним</span>
+            </div>
+
+            <div class="review-card">
+                <p class="review-text">
+                    «Очень доволен сотрудничеством. NFT получил быстро, никаких неприятных ситуаций не было.»
+                </p>
+                <span class="review-author">— Клиент</span>
+            </div>
+
+            <div class="review-card">
+                <p class="review-text">
+                    «Cloreth помог провести сделку максимально комфортно. Всё чётко и профессионально.»
+                </p>
+                <span class="review-author">— Покупатель</span>
+            </div>
+
+            <div class="review-card">
+                <p class="review-text">
+                    «Быстро договорились, быстро провели сделку. Буду обращаться ещё.»
+                </p>
+                <span class="review-author">— Пользователь</span>
+            </div>
+
+            <div class="review-card">
+                <p class="review-text">
+                    «Всё прошло отлично. Хорошая коммуникация, быстрая передача NFT и понятные условия.»
+                </p>
+                <span class="review-author">— Участник сделки</span>
+            </div>
+
+        </div>
+
+        <!-- OTHER ОТЗЫВЫ -->
+        <div class="reviews-list hidden" id="reviews-other">
+
+            <div class="review-card">
+                <p class="review-text">
+                    «Просто лучший, очень сильно помог! Люблю @bitchverification»
+                </p>
+                <span class="review-author">— Клиент</span>
+            </div>
+
+            <div class="review-card">
+                <p class="review-text">
+                    «Имба деф, помог разрешить трабл с типом буквально за 10 минут!»
+                </p>
+                <span class="review-author">— Участник сообщества</span>
+            </div>
+
+            <div class="review-card">
+                <p class="review-text">
+                    «Купила приват у @bitchverification, всё прошло быстро и четко. Всем советую!»
+                </p>
+                <span class="review-author">— Покупатель</span>
+            </div>
+
+            <div class="review-card">
+                <p class="review-text">
+                    «Лучший пробив, всегда точная и верная информация! Настоящая легенда, сделал всё быстро.»
+                </p>
+                <span class="review-author">— Довольный клиент</span>
+            </div>
+
+            <div class="review-card">
+                <p class="review-text">
+                    «Задефал лучший. Всё честно, без скама, помог и спас в сложной ситуации!»
+                </p>
+                <span class="review-author">— Покупатель</span>
+            </div>
+
+            <div class="review-card">
+                <p class="review-text">
+                    «Обучалка от @bitchverification имба, выдал приват за минут 30. По моему мнению, стоит каждой копейки.»
+                </p>
+                <span class="review-author">— Ученик</span>
+            </div>
+
+            <div class="review-card">
+                <p class="review-text">
+                    «Брал VIP деф, отклик моментальный. Взяли под полную защиту, теперь спокоен!»
+                </p>
+                <span class="review-author">— Постоянный клиент</span>
+            </div>
+
+            <div class="review-card">
+                <p class="review-text">
+                    «Заказывал снос канала, сделали меньше чем за сутки! Качество работы на высоте.»
+                </p>
+                <span class="review-author">— Заказчик</span>
+            </div>
+
+            <div class="review-card">
+                <p class="review-text">
+                    «Купил рекламу в Vile Creatures, приход получился даже больше обещанного. Отличная отдача!»
+                </p>
+                <span class="review-author">— Рекламодатель</span>
+            </div>
+
+            <div class="review-card">
+                <p class="review-text">
+                    «Осинт выполнен максимально детально. Нашли всё до мелочей, о которых я даже не догадывался!»
+                </p>
+                <span class="review-author">— Клиент</span>
+            </div>
+
+            <div class="review-card">
+                <p class="review-text">
+                    «Беру услуги уже третий раз у @bitchverification, всё на высшем уровне. Настоящий профи!»
+                </p>
+                <span class="review-author">— Сонни</span>
+            </div>
+
+            <div class="review-card">
+                <p class="review-text">
+                    «Работает 24/7, ответил глубокой ночью и сразу решил мою проблему!»
+                </p>
+                <span class="review-author">— Довольный юзер</span>
+            </div>
+
+            <div class="review-card">
+                <p class="review-text">
+                    «Оплата Telegram Stars прошла моментально, сразу приступили к работе без лишних вопросов.»
+                </p>
+                <span class="review-author">— Покупатель</span>
+            </div>
+
+            <div class="review-card">
+                <p class="review-text">
+                    «Обучение топовое, всё доходчиво разжевал с нуля. Теперь сам умею делать базовый пробив!»
+                </p>
+                <span class="review-author">— Ученик</span>
+            </div>
+
+            <div class="review-card">
+                <p class="review-text">
+                    «Самая адекватная поддержка и нормальное отношение к клиентам. Рекомендую!»
+                </p>
+                <span class="review-author">— Клиент</span>
+            </div>
+
+            <div class="review-card">
+                <p class="review-text">
+                    «Спас от серьезного шантажа. Задефал быстро и профессионально. Огромное спасибо @bitchverification!»
+                </p>
+                <span class="review-author">— Аноним</span>
+            </div>
+
         </div>
     </div>
+</div>
 
-    <!-- Тост -->
-    <div id="toast">Юзернейм скопирован</div>
+<!-- УВЕДОМЛЕНИЕ -->
+<div id="toast">Юзернейм скопирован</div>
 
-    <script>
-        /* --- ЛОКАЛИЗАЦИЯ --- */
-        const translations = {
-            ru: {
-                typewriter: "защищу вас в любой ситуации!",
-                garant: "Гарантия",
-                support: "Поддержка",
-                test: "Тест Деф",
-                vipSub: "Навсегда",
-                vipDesc: "1. Моментально отвечаем<br>2. Делаем все чтобы вас защитить<br>3. Помогает в анонимности",
-                def1: "Разово",
-                def2: "Месяц",
-                def3: "3 месяца",
-                def4: "Год",
-                def5: "Навсегда",
-                osintSub: "Поиск человека по открытым источникам (*в зависимости от сложности)",
-                eduTitle: "Обучение",
-                eduSub: "Обучу всему чему умею, от А до Я.",
-                znozSub: "ТГ аккаунта / канала / чата",
-                znozPrice: "Стоимость",
-                advTitle: "Реклама в Vile Creatures",
-                advSub: "Один час = приход +- 150 человек",
-                adv1: "1 час",
-                adv2: "3 часа",
-                adv3: "6 часов",
-                adv4: "Навсегда",
-                payTitle: "Оплату принимаю:",
-                payMethods: "На карту / КБ / NFT / Звезды",
-                linkBuy: "Купить / Связь в ЛС",
-                btnReviews: "Посмотреть отзывы",
-                modalTitle: "Отзывы клиентов",
-                toast: "Юзернейм скопирован",
-                themeLight: "Светлая тема",
-                themeDark: "Тёмная тема"
-            },
-            en: {
-                typewriter: "i will protect you in any situation!",
-                garant: "Guarantee",
-                support: "Support",
-                test: "Test Def",
-                vipSub: "Lifetime",
-                vipDesc: "1. Instant response<br>2. Complete protection<br>3. Maximizes anonymity",
-                def1: "One-time",
-                def2: "1 Month",
-                def3: "3 Months",
-                def4: "1 Year",
-                def5: "Lifetime",
-                osintSub: "Open source intelligence search (*depends on complexity)",
-                eduTitle: "Training",
-                eduSub: "Full training from A to Z.",
-                znozSub: "TG account / channel / chat",
-                znozPrice: "Price",
-                advTitle: "Ads in Vile Creatures",
-                advSub: "1 hour = approx. 150 members",
-                adv1: "1 hour",
-                adv2: "3 hours",
-                adv3: "6 hours",
-                adv4: "Lifetime",
-                payTitle: "Accepted payment methods:",
-                payMethods: "Card / CryptoBot / NFT / Stars",
-                linkBuy: "Buy / Direct Message",
-                btnReviews: "View Customer Reviews",
-                modalTitle: "Customer Reviews",
-                toast: "Username copied",
-                themeLight: "Light Theme",
-                themeDark: "Dark Theme"
-            }
-        };
+<script>
+    /* ЛОКАЛИЗАЦИЯ */
 
-        let currentLang = 'ru';
-        let isTyping = false;
+    const translations = {
+        ru: {
+            typewriter: "защищу вас в любой ситуации!",
+            garant: "Гарантия",
+            support: "Поддержка",
+            test: "Тест Деф",
+            vipSub: "Навсегда",
+            vipDesc: "1. Моментально отвечаем<br>2. Делаем все чтобы вас защитить<br>3. Помогаем в анонимности",
+            def1: "Разово",
+            def2: "Месяц",
+            def3: "3 месяца",
+            def4: "Год",
+            def5: "Навсегда",
+            osintSub: "Поиск человека по открытым источникам (*в зависимости от сложности)",
+            eduTitle: "Обучение",
+            eduSub: "Обучу всему чему умею, от А до Я.",
+            znozSub: "ТГ аккаунта / канала / чата",
+            znozPrice: "Стоимость",
+            advTitle: "Реклама в Vile Creatures",
+            advSub: "Один час = приход +- 150 человек",
+            adv1: "1 час",
+            adv2: "3 часа",
+            adv3: "6 часов",
+            adv4: "Навсегда",
+            payTitle: "Оплату принимаю:",
+            payMethods: "На карту / КБ / NFT / Звезды",
+            linkBuy: "Купить / Связь в ЛС",
+            btnReviews: "Посмотреть отзывы",
+            modalTitle: "Отзывы клиентов",
+            toast: "Юзернейм скопирован",
+            themeLight: "Светлая тема",
+            themeDark: "Тёмная тема"
+        },
 
-        /* --- ПЕЧАТНАЯ МАШИНКА --- */
-        function startTypewriter(text) {
-            const el = document.getElementById("typewriter");
-            el.innerText = "";
-            let i = 0;
-            isTyping = true;
-            
-            function type() {
-                if (i < text.length) {
-                    el.innerText += text.charAt(i);
-                    i++;
-                    setTimeout(type, 50);
-                } else {
-                    isTyping = false;
-                }
-            }
-            type();
+        en: {
+            typewriter: "i will protect you in any situation!",
+            garant: "Guarantee",
+            support: "Support",
+            test: "Test Def",
+            vipSub: "Lifetime",
+            vipDesc: "1. Instant response<br>2. Complete protection<br>3. Maximizes anonymity",
+            def1: "One-time",
+            def2: "1 Month",
+            def3: "3 Months",
+            def4: "1 Year",
+            def5: "Lifetime",
+            osintSub: "Open source intelligence search (*depends on complexity)",
+            eduTitle: "Training",
+            eduSub: "Full training from A to Z.",
+            znozSub: "TG account / channel / chat",
+            znozPrice: "Price",
+            advTitle: "Ads in Vile Creatures",
+            advSub: "1 hour = approx. 150 members",
+            adv1: "1 hour",
+            adv2: "3 hours",
+            adv3: "6 hours",
+            adv4: "Lifetime",
+            payTitle: "Accepted payment methods:",
+            payMethods: "Card / CryptoBot / NFT / Stars",
+            linkBuy: "Buy / Direct Message",
+            btnReviews: "View Customer Reviews",
+            modalTitle: "Customer Reviews",
+            toast: "Username copied",
+            themeLight: "Light Theme",
+            themeDark: "Dark Theme"
         }
+    };
 
-        /* --- СМЕНА ЯЗЫКА --- */
-        function setLang(lang) {
-            currentLang = lang;
-            document.getElementById('lang-ru').classList.toggle('active', lang === 'ru');
-            document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+    let currentLang = 'ru';
+    let isTyping = false;
 
-            const t = translations[lang];
-            document.getElementById('t-garant').innerText = t.garant;
-            document.getElementById('t-support').innerText = t.support;
-            document.getElementById('t-test').innerText = t.test;
-            document.getElementById('t-vip-sub').innerText = t.vipSub;
-            document.getElementById('t-vip-desc').innerHTML = t.vipDesc;
-            document.getElementById('t-def-1').innerText = t.def1;
-            document.getElementById('t-def-2').innerText = t.def2;
-            document.getElementById('t-def-3').innerText = t.def3;
-            document.getElementById('t-def-4').innerText = t.def4;
-            document.getElementById('t-def-5').innerText = t.def5;
-            document.getElementById('t-osint-sub').innerText = t.osintSub;
-            document.getElementById('t-edu-title').innerText = t.eduTitle;
-            document.getElementById('t-edu-sub').innerText = t.eduSub;
-            document.getElementById('t-znoz-sub').innerText = t.znozSub;
-            document.getElementById('t-znoz-price').innerText = t.znozPrice;
-            document.getElementById('t-adv-title').innerText = t.advTitle;
-            document.getElementById('t-adv-sub').innerText = t.advSub;
-            document.getElementById('t-adv-1').innerText = t.adv1;
-            document.getElementById('t-adv-2').innerText = t.adv2;
-            document.getElementById('t-adv-3').innerText = t.adv3;
-            document.getElementById('t-adv-4').innerText = t.adv4;
-            document.getElementById('t-pay-title').innerText = t.payTitle;
-            document.getElementById('t-pay-methods').innerText = t.payMethods;
-            document.getElementById('t-link-buy').innerText = t.linkBuy;
-            document.getElementById('t-btn-reviews').innerText = t.btnReviews;
-            document.getElementById('t-modal-title').innerText = t.modalTitle;
-            document.getElementById('toast').innerText = t.toast;
+    /* ПЕЧАТНАЯ МАШИНКА */
 
-            updateThemeButtonText();
+    function startTypewriter(text) {
+        const el = document.getElementById("typewriter");
 
-            if (!isTyping) {
-                document.getElementById("typewriter").innerText = t.typewriter;
-            }
-        }
+        el.innerText = "";
 
-        /* --- СМЕНА ТЕМЫ --- */
-        function toggleTheme() {
-            const html = document.documentElement;
-            if (html.getAttribute('data-theme') === 'dark') {
-                html.setAttribute('data-theme', 'light');
+        let i = 0;
+        isTyping = true;
+
+        function type() {
+            if (i < text.length) {
+                el.innerText += text.charAt(i);
+                i++;
+                setTimeout(type, 50);
             } else {
-                html.setAttribute('data-theme', 'dark');
-            }
-            updateThemeButtonText();
-        }
-
-        function updateThemeButtonText() {
-            const html = document.documentElement;
-            const btn = document.getElementById('theme-btn');
-            const isDark = html.getAttribute('data-theme') === 'dark';
-            const t = translations[currentLang];
-            btn.innerText = isDark ? t.themeLight : t.themeDark;
-        }
-
-        /* --- МОДАЛЬНОЕ ОКНО --- */
-        function openReviews() {
-            document.getElementById('reviews-modal').classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeReviews(e) {
-            if (e.target.classList.contains('modal-overlay')) {
-                closeReviewsDirect();
+                isTyping = false;
             }
         }
 
-        function closeReviewsDirect() {
-            document.getElementById('reviews-modal').classList.remove('active');
-            document.body.style.overflow = '';
+        type();
+    }
+
+    /* СМЕНА ЯЗЫКА */
+
+    function setLang(lang) {
+        currentLang = lang;
+
+        document.getElementById('lang-ru')
+            .classList.toggle('active', lang === 'ru');
+
+        document.getElementById('lang-en')
+            .classList.toggle('active', lang === 'en');
+
+        const t = translations[lang];
+
+        document.getElementById('t-garant').innerText = t.garant;
+        document.getElementById('t-support').innerText = t.support;
+        document.getElementById('t-test').innerText = t.test;
+        document.getElementById('t-vip-sub').innerText = t.vipSub;
+        document.getElementById('t-vip-desc').innerHTML = t.vipDesc;
+
+        document.getElementById('t-def-1').innerText = t.def1;
+        document.getElementById('t-def-2').innerText = t.def2;
+        document.getElementById('t-def-3').innerText = t.def3;
+        document.getElementById('t-def-4').innerText = t.def4;
+        document.getElementById('t-def-5').innerText = t.def5;
+
+        document.getElementById('t-osint-sub').innerText = t.osintSub;
+        document.getElementById('t-edu-title').innerText = t.eduTitle;
+        document.getElementById('t-edu-sub').innerText = t.eduSub;
+
+        document.getElementById('t-znoz-sub').innerText = t.znozSub;
+        document.getElementById('t-znoz-price').innerText = t.znozPrice;
+
+        document.getElementById('t-adv-title').innerText = t.advTitle;
+        document.getElementById('t-adv-sub').innerText = t.advSub;
+        document.getElementById('t-adv-1').innerText = t.adv1;
+        document.getElementById('t-adv-2').innerText = t.adv2;
+        document.getElementById('t-adv-3').innerText = t.adv3;
+        document.getElementById('t-adv-4').innerText = t.adv4;
+
+        document.getElementById('t-pay-title').innerText = t.payTitle;
+        document.getElementById('t-pay-methods').innerText = t.payMethods;
+
+        document.getElementById('t-link-buy').innerText = t.linkBuy;
+        document.getElementById('t-btn-reviews').innerText = t.btnReviews;
+        document.getElementById('t-modal-title').innerText = t.modalTitle;
+        document.getElementById('toast').innerText = t.toast;
+
+        updateThemeButtonText();
+
+        if (!isTyping) {
+            document.getElementById("typewriter").innerText = t.typewriter;
+        }
+    }
+
+    /* СМЕНА ТЕМЫ */
+
+    function toggleTheme() {
+        const html = document.documentElement;
+
+        if (html.getAttribute('data-theme') === 'dark') {
+            html.setAttribute('data-theme', 'light');
+        } else {
+            html.setAttribute('data-theme', 'dark');
         }
 
-        /* --- КОПИРОВАНИЕ И ТОСТ --- */
-        function copyTag(event, text) {
-            navigator.clipboard.writeText(text);
-            const toast = document.getElementById("toast");
-            toast.classList.add("show");
-            setTimeout(() => { 
-                toast.classList.remove("show"); 
-            }, 2000);
+        updateThemeButtonText();
+    }
+
+    function updateThemeButtonText() {
+        const html = document.documentElement;
+        const btn = document.getElementById('theme-btn');
+
+        const isDark = html.getAttribute('data-theme') === 'dark';
+        const t = translations[currentLang];
+
+        btn.innerText = isDark ? t.themeLight : t.themeDark;
+    }
+
+    /* ПЕРЕКЛЮЧЕНИЕ КАТЕГОРИЙ ОТЗЫВОВ */
+
+    function showReviewCategory(category) {
+        const nftReviews = document.getElementById('reviews-nft');
+        const otherReviews = document.getElementById('reviews-other');
+
+        const nftTab = document.getElementById('tab-nft');
+        const otherTab = document.getElementById('tab-other');
+
+        if (category === 'nft') {
+            nftReviews.classList.remove('hidden');
+            otherReviews.classList.add('hidden');
+
+            nftTab.classList.add('active');
+            otherTab.classList.remove('active');
+        } else {
+            otherReviews.classList.remove('hidden');
+            nftReviews.classList.add('hidden');
+
+            otherTab.classList.add('active');
+            nftTab.classList.remove('active');
+        }
+    }
+
+    /* МОДАЛЬНОЕ ОКНО */
+
+    function openReviews() {
+        document.getElementById('reviews-modal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeReviews(e) {
+        if (e.target.classList.contains('modal-overlay')) {
+            closeReviewsDirect();
+        }
+    }
+
+    function closeReviewsDirect() {
+        document.getElementById('reviews-modal').classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    /* КОПИРОВАНИЕ USERNAME */
+
+    function copyTag(event, text) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).catch(() => {});
         }
 
-        /* ИНИЦИАЛИЗАЦИЯ */
-        window.addEventListener('DOMContentLoaded', () => {
-            startTypewriter(translations[currentLang].typewriter);
-        });
-    </script>
+        const toast = document.getElementById("toast");
+
+        toast.classList.add("show");
+
+        setTimeout(() => {
+            toast.classList.remove("show");
+        }, 2000);
+    }
+
+    /* ИНИЦИАЛИЗАЦИЯ */
+
+    window.addEventListener('DOMContentLoaded', () => {
+        startTypewriter(translations[currentLang].typewriter);
+        showReviewCategory('nft');
+    });
+
+</script>
+
 </body>
 </html>
